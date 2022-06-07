@@ -29,6 +29,9 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this,"${result.data?.getStringExtra("potlistcount")}",Toast.LENGTH_LONG).show()
                     addpot()
                 }
+                Activity.RESULT_CANCELED -> {
+                    Toast.makeText(this,"화분 추가 취소",Toast.LENGTH_LONG).show()
+                }
             }
         }
         add_pot.setOnClickListener {
