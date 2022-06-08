@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.activity_pot1.pot1name
 import org.eclipse.paho.client.mqttv3.MqttMessage
 
 class diseaseChkActivity : AppCompatActivity() {
-    val sub_topic = "iot/#"
+    val sub_topic = "iot/diseaseChkCamera"
     val server_uri = "tcp://192.168.0.24:1883" //broker의 ip와 port
     var mymqtt: MyMqtt? = null
     override fun onCreate(savedInstanceState: Bundle?) {

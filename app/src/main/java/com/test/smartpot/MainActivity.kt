@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     var datalist = ArrayList<PotList>()
     var imglist = ArrayList<Int>()
     private lateinit var resultLauncher1: ActivityResultLauncher<Intent>
-    var pot1 = PotList("Pot1", "상추")
+    //var pot1 = PotList("Pot1", "상추")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
             when(result.resultCode){
                 Activity.RESULT_OK -> {
                     datalist.add(PotList(result.data?.getStringExtra("potname"),result.data?.getStringExtra("plantname")))
-                    imglist.add(R.drawable.ic_flag_of_germany)
+                    imglist.add(R.drawable.ic_flowerpot_320)
                     potlist += 1
                     Toast.makeText(this,"${result.data?.getStringExtra("potlistcount")}",Toast.LENGTH_LONG).show()
                     addpot()
@@ -40,8 +40,8 @@ class MainActivity : AppCompatActivity() {
             }
             resultLauncher1.launch(intent)
         }
-        datalist.add(pot1)
-        imglist.add(R.drawable.ic_flag_of_germany)
+        //datalist.add(pot1)
+        //imglist.add(R.drawable.ic_flag_of_germany)
         addpot()
     }
 
