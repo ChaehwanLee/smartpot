@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.test.smartpot">
 
+    <!-- 인터넷 접속할 수 있는 권한 -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 네트워크에 연결됐는지 확인할 수 있게 하는 권한 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 디바이스가 sleep상태에 빠지지 않도록 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,10 +15,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Smartpot">
-        <activity android:name=".pot1Activity"></activity>
-        <activity android:name=".pot2Activity"></activity>
-        <activity android:name=".addpotactivity">
-            </activity>
+        <activity android:name=".diseaseChkActivity"></activity>
+        <activity android:name=".pot1Activity" />
+        <activity android:name=".pot2Activity" />
+        <activity android:name=".addpotactivity"></activity>
         <activity android:name=".splashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,6 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
+        <service android:name="org.eclipse.paho.android.service.MqttService" />
     </application>
 
 </manifest>

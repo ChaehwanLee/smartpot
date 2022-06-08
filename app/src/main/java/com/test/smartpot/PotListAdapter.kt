@@ -32,7 +32,10 @@ class PotListAdapter(var context: Context, var itemLayout:Int, var datalist:Arra
         myTextView.setOnClickListener {
             when (position) {
                 0 -> {
-                    val intent = Intent(context, pot1Activity::class.java)
+                    val intent = Intent(context, pot1Activity::class.java).apply {
+                        putExtra("potname","${myTextView.text}")
+                        putExtra("plantname","${datalist.get(position).plant}")
+                    }
                     ContextCompat.startActivity(context, intent, null)
                 }
                 1->{
@@ -44,7 +47,10 @@ class PotListAdapter(var context: Context, var itemLayout:Int, var datalist:Arra
         myImageVIew.setOnClickListener {
             when (position) {
                 0 -> {
-                    val intent = Intent(context, pot1Activity::class.java)
+                    val intent = Intent(context, pot1Activity::class.java).apply {
+                        putExtra("potname","${myTextView.text}")
+                        putExtra("plantname","${datalist.get(position).plant}")
+                    }
                     ContextCompat.startActivity(context, intent, null)
                 }
                 1->{

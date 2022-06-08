@@ -21,6 +21,7 @@ class addpotactivity : AppCompatActivity() {
         addPotOk.setOnClickListener {
             potlist += 1
             intent.putExtra("potname",potname.text.toString())
+            intent.putExtra("plantname",plantName.text.toString())
             intent.putExtra("addok","추가됨 - 현재 화분 갯수 : $potlist")
             intent.putExtra("potlistcount","$potlist")
             setResult(Activity.RESULT_OK,intent)
