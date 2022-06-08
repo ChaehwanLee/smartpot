@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    var potlist = 1
+    var potlist = 0
     var datalist = ArrayList<PotList>()
     var imglist = ArrayList<Int>()
     private lateinit var resultLauncher1: ActivityResultLauncher<Intent>
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
                     datalist.add(PotList(result.data?.getStringExtra("potname"),result.data?.getStringExtra("plantname")))
                     imglist.add(R.drawable.ic_flowerpot_320)
                     potlist += 1
-                    Toast.makeText(this,"${result.data?.getStringExtra("potlistcount")}",Toast.LENGTH_LONG).show()
+                    potlist = result.data?.getIntExtra("potlistcount",0)!!
                     addpot()
                 }
                 Activity.RESULT_CANCELED -> {
@@ -35,10 +35,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
         add_pot.setOnClickListener {
-            val intent = Intent(this, addpotactivity::class.java).apply{
-                putExtra("listcount","$potlist")
+            if(potlist >= 2){
+                Toast.makeText(this,"화분을 더 추가할 수 없습니다",Toast.LENGTH_LONG).show()
             }
-            resultLauncher1.launch(intent)
+            else{
+                val intent = Intent(this, addpotactivity::class.java).apply{
+                    putExtra("listcount",potlist)
+                }
+                resultLauncher1.launch(intent)
+            }
         }
         //datalist.add(pot1)
         //imglist.add(R.drawable.ic_flag_of_germany)

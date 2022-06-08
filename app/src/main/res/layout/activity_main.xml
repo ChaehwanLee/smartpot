@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Select Your Pot"
+        android:text="화분을 선택해주세요"
         android:textStyle="bold"
         android:gravity="center"
         android:layout_margin="20dp"
