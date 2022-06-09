@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import kotlinx.android.synthetic.main.activity_pot_level.*
 import org.eclipse.paho.client.mqttv3.MqttMessage
@@ -26,6 +27,7 @@ class potLevelActivity : AppCompatActivity() {
     lateinit var image1: Bitmap
     var msg1: ByteArray? = null
     lateinit var imageuri: Uri
+    var imageFlag = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pot_level)
@@ -36,13 +38,18 @@ class potLevelActivity : AppCompatActivity() {
         potlevelname.text = intent.getStringExtra("potname")
         //공유하기 클릭시 원하는 곳으로 공유
         snsShareBtn.setOnClickListener {
-            val shareIntent: Intent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT,"지금 ${potlevelname.text}의 레벨은 ${potLevel.text}")
-                putExtra(Intent.EXTRA_STREAM, imageuri,)
-                type = "image/png"
+            if(imageFlag == 1){
+                val shareIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT,"지금 ${potlevelname.text}의 레벨은 ${potLevel.text}")
+                    putExtra(Intent.EXTRA_STREAM, imageuri)
+                    type = "image/png"
+                }
+                startActivity(Intent.createChooser(shareIntent, "Helllo"))
+            }else{
+                Toast.makeText(this,"'현재 상태' 버튼을 눌러 이미지를 받아 주세요",Toast.LENGTH_LONG).show()
             }
-            startActivity(Intent.createChooser(shareIntent, "Helllo"))
+
 
         }
         levelCameraBtn.setOnClickListener {
@@ -56,6 +63,7 @@ class potLevelActivity : AppCompatActivity() {
                 val msg = message.payload
                 val image= BitmapFactory.decodeByteArray(msg, 0, msg.size);
                 image1 = image
+                imageFlag = 1
                 levelchkcamera.setImageBitmap(image)
                 saveImageUpAndVerQ(image1)
             }
