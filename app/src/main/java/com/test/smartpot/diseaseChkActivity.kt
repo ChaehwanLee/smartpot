@@ -16,7 +16,6 @@ class diseaseChkActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_disease_chk)
-
         mymqtt = MyMqtt(this, server_uri)
         mymqtt?.mysetCallback(::onReceived)
         mymqtt?.connect(arrayOf<String>(sub_topic))
@@ -25,9 +24,7 @@ class diseaseChkActivity : AppCompatActivity() {
     }
 
     fun onReceived(topic:String,message: MqttMessage){
-        //토픽의 수신을 처리
-        //EditText에 내용을 출력하기, 영상출력, 도착된 메시지 안에서 온도랑 습도 데이터를 이용해서 차트그리기,
-        //모션 감지시지 알림 발생 등
+        //토픽 설정 필요
         val msg = message.payload
         val image= BitmapFactory.decodeByteArray(msg, 0, msg.size);
         mqttImg.setImageBitmap(image)
