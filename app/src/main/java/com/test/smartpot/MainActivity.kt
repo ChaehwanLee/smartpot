@@ -59,6 +59,10 @@ class MainActivity : AppCompatActivity() {
                 resultLauncher1.launch(intent)
             }
         }
+        view_friend.setOnClickListener {
+            val intent = Intent(this, friendActivity::class.java)
+            startActivity(intent)
+        }
         //datalist.add(pot1)
         //imglist.add(R.drawable.ic_flag_of_germany)
         addpot()
