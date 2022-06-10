@@ -16,7 +16,8 @@ class MainActivity : AppCompatActivity() {
     var datalist = ArrayList<PotList>()
     var imglist = ArrayList<Int>()
     private lateinit var resultLauncher1: ActivityResultLauncher<Intent>
-    //var pot1 = PotList("Pot1", "상추")
+    private lateinit var resultLauncher2: ActivityResultLauncher<Intent>
+    private lateinit var resultLauncher3: ActivityResultLauncher<Intent>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -48,6 +49,30 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        resultLauncher2 = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
+            when(result.resultCode){
+                Activity.RESULT_OK -> {
+                    datalist[0].title = result.data?.getStringExtra("potname")
+                    datalist[0].plant = result.data?.getStringExtra("plantname")
+                    addpot()
+                }
+                Activity.RESULT_CANCELED -> {
+                    Toast.makeText(this,"화분정보수정 취소",Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+        resultLauncher3 = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
+            when(result.resultCode){
+                Activity.RESULT_OK -> {
+                    datalist[1].title = result.data?.getStringExtra("potname")
+                    datalist[1].plant = result.data?.getStringExtra("plantname")
+                    addpot()
+                }
+                Activity.RESULT_CANCELED -> {
+                    Toast.makeText(this,"화분정보수정 취소",Toast.LENGTH_LONG).show()
+                }
+            }
+        }
         add_pot.setOnClickListener {
             if(potlist >= 2){
                 Toast.makeText(this,"화분을 더 추가할 수 없습니다",Toast.LENGTH_LONG).show()
@@ -59,12 +84,35 @@ class MainActivity : AppCompatActivity() {
                 resultLauncher1.launch(intent)
             }
         }
+
+        pot1ModifyBtn.setOnClickListener {
+            if(potlist == 0){
+                Toast.makeText(this,"화분을 추가해 주세요",Toast.LENGTH_LONG).show()
+            }else{
+                val intent = Intent(this, modifypotActiviy::class.java).apply {
+                    putExtra("potnumber","1")
+                    putExtra("potname", datalist[0].title.toString())
+                    putExtra("potplantname", datalist[0].plant.toString())
+                }
+                resultLauncher2.launch(intent)
+            }
+        }
+        pot2ModifyBtn.setOnClickListener {
+            if(potlist == 0 || potlist == 1){
+                Toast.makeText(this,"화분을 추가해 주세요",Toast.LENGTH_LONG).show()
+            }else{
+                val intent = Intent(this, modifypotActiviy::class.java).apply {
+                    putExtra("potnumber","2")
+                    putExtra("potname", datalist[1].title.toString())
+                    putExtra("potplantname", datalist[1].plant.toString())
+                }
+                resultLauncher3.launch(intent)
+            }
+        }
         view_friend.setOnClickListener {
             val intent = Intent(this, friendActivity::class.java)
             startActivity(intent)
         }
-        //datalist.add(pot1)
-        //imglist.add(R.drawable.ic_flag_of_germany)
         addpot()
     }
 
@@ -76,6 +124,7 @@ class MainActivity : AppCompatActivity() {
         myrecycler1.adapter = adapter
     }
 
+    //앱을 처음 실행시 메인 액티비티에 화분 리스트를 보여주기 위한 메소드
     private fun potListInit(){
         when(myApp.prefs.getString("potlist","0").toInt()){
             1->{

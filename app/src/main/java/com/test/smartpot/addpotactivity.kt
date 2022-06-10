@@ -33,17 +33,22 @@ class addpotactivity : AppCompatActivity() {
             finish()
         }
         addPotOk.setOnClickListener {
-            if(potname.text.toString().trim().isEmpty() or plantName.text.toString().trim().isEmpty()){
+            if(potname.text.isEmpty() || plantName.text.isEmpty()){
                 Toast.makeText(this,"정보를 모두 입력해주세요",Toast.LENGTH_LONG).show()
             }else{
-                potlist += 1
-                intent.putExtra("potname",potname.text.toString())
-                intent.putExtra("plantname",plantName.text.toString())
-                intent.putExtra("addok","추가됨 - 현재 화분 갯수 : $potlist")
-                intent.putExtra("potlistcount",potlist)
-                setResult(Activity.RESULT_OK,intent)
-                finish()
+                if(potname.text.toString().trim().isEmpty() or plantName.text.toString().trim().isEmpty()){
+                    Toast.makeText(this,"정보를 모두 입력해주세요",Toast.LENGTH_LONG).show()
+                }else{
+                    potlist += 1
+                    intent.putExtra("potname",potname.text.toString())
+                    intent.putExtra("plantname",plantName.text.toString())
+                    intent.putExtra("addok","추가됨 - 현재 화분 갯수 : $potlist")
+                    intent.putExtra("potlistcount",potlist)
+                    setResult(Activity.RESULT_OK,intent)
+                    finish()
+                }
             }
+
 
         }
     }
