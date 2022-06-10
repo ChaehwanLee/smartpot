@@ -25,6 +25,9 @@
         <activity android:name=".pot2Activity" />
         <activity android:name=".addpotactivity" />
         <activity android:name=".splashActivity">
+        </activity>
+
+        <activity android:name=".friendActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
