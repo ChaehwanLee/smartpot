@@ -1,6 +1,6 @@
 package com.test.smartpot
 
-import android.graphics.BitmapFactory
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 

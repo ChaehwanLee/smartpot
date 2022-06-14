@@ -1,14 +1,11 @@
 package com.test.smartpot
 
 import android.app.Activity
-import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.InputFilter
-import android.util.Log
 import android.widget.Toast
 import kotlinx.android.synthetic.main.addpot.*
-import java.util.regex.Pattern
+
 
 class addpotactivity : AppCompatActivity() {
     var chkedPlant: String? = null
@@ -41,7 +38,7 @@ class addpotactivity : AppCompatActivity() {
         }
         addPotOk.setOnClickListener {
             //화분이름이나 식물 종류가 비어있는 경우
-            if(potname.text.toString().trim().isEmpty() || plantSelect.isSelected == false){
+            if(potname.text.toString().trim().isEmpty() || !Strawberry.isChecked && !Lettuce.isChecked && !Rosemary.isChecked && !Geranium.isChecked){
                 Toast.makeText(this,"정보를 모두 입력해주세요",Toast.LENGTH_LONG).show()
             }else{
                 potlist += 1

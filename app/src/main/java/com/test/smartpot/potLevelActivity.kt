@@ -22,7 +22,7 @@ import java.io.IOException
 
 class potLevelActivity : AppCompatActivity() {
     val sub_topic = "iot/currentLevelCamera"
-    val server_uri = "tcp://192.168.0.24:1883" //broker의 ip와 port
+    val server_uri = "tcp://:1883" //broker의 ip와 port
     var mymqtt: MyMqtt? = null
     lateinit var image1: Bitmap
     var msg1: ByteArray? = null
@@ -114,5 +114,9 @@ class potLevelActivity : AppCompatActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        mymqtt?.disconnect()
     }
 }

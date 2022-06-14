@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
     tools:context=".pot1Activity">
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -28,7 +29,8 @@
         android:id="@+id/plantSelect"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:gravity="center">
             <RadioButton
                 android:id="@+id/Strawberry"
                 android:layout_width="wrap_content"

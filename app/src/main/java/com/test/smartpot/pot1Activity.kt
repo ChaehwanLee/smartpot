@@ -1,12 +1,12 @@
 package com.test.smartpot
 
 import android.content.Intent
-import android.graphics.BitmapFactory
+
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import kotlinx.android.synthetic.main.activity_disease_chk.*
+
 import kotlinx.android.synthetic.main.activity_pot1.*
 import org.eclipse.paho.client.mqttv3.MqttMessage
 
