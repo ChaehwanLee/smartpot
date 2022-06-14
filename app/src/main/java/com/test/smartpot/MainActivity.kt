@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -26,11 +27,12 @@ class MainActivity : AppCompatActivity() {
         resultLauncher1 = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
             when(result.resultCode){
                 Activity.RESULT_OK -> {
+                    Log.d("dataa",result.data?.getStringExtra("plantname")!!)
                     datalist.add(PotList(result.data?.getStringExtra("potname"),result.data?.getStringExtra("plantname")))
                     imglist.add(R.drawable.ic_flowerpot_320)
                     potlist = result.data?.getIntExtra("potlistcount",0)!!
                     addpot()
-                    when(potlist){
+                    when(potlist){ // 화분 갯수에 따라서 추가하는 화분의 키가 달라짐
                         1 -> {
                             result.data?.getStringExtra("potname")?.let { myApp.prefs.setString("pot1name", it) }
                             result.data?.getStringExtra("plantname")?.let { myApp.prefs.setString("pot1plantname", it) }

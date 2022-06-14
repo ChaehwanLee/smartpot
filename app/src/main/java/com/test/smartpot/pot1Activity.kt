@@ -2,6 +2,7 @@ package com.test.smartpot
 
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,9 +12,10 @@ import org.eclipse.paho.client.mqttv3.MqttMessage
 
 class pot1Activity : AppCompatActivity() {
 
-    private val sub_topic = "sensor1/soilWater"
-    private val server_uri = "tcp://192.168.0.24:1883" //broker의 ip와 port
+    private val sub_topic = "sensor1/#"
+    private val server_uri = "tcp://:1883" //broker의 ip와 port
     private var mymqtt: MyMqtt? = null
+    private var soilWaterValue = 0.0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pot1)
@@ -44,12 +46,20 @@ class pot1Activity : AppCompatActivity() {
     //mqtt 값을 받는 경우
     fun onReceived(topic:String,message: MqttMessage){
         val myTopic = topic.split('/')
-        val myPayload = String(message.payload)
+        val myPayload = String(message.payload).split(':')
         Log.d("text123",myTopic[1])
-        when(myTopic[1]){
-            "soilWater" -> {
-                Log.d("text123", myPayload)
-                soilWater.text = myPayload
+        when(myTopic[0]){
+            "sensor1" -> {
+                Log.d("text123", myPayload[1])
+                soilWaterValue = myPayload[1].toDouble()
+                Log.d("text123", soilWaterValue.toString())
+                if (soilWaterValue < 20){
+                    soilWater.setTextColor(Color.RED)
+                    soilWater.text = myPayload[1]
+                }else{
+                    soilWater.setTextColor(Color.BLUE)
+                    soilWater.text = myPayload[1]
+                }
             }
         }
 

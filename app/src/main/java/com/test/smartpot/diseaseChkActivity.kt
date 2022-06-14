@@ -25,6 +25,10 @@ class diseaseChkActivity : AppCompatActivity() {
 
     fun onReceived(topic:String,message: MqttMessage){
         //토픽 설정 필요
+//        when(topic){
+//
+//        }
+        // 이미지를 받은 경우 mqttImg로 출력
         val msg = message.payload
         val image= BitmapFactory.decodeByteArray(msg, 0, msg.size);
         mqttImg.setImageBitmap(image)
