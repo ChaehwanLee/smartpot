@@ -49,8 +49,6 @@ class potLevelActivity : AppCompatActivity() {
             }else{
                 Toast.makeText(this,"'현재 상태' 버튼을 눌러 이미지를 받아 주세요",Toast.LENGTH_LONG).show()
             }
-
-
         }
         levelCameraBtn.setOnClickListener {
             mymqtt?.publish("iot/actLevelCamera", "cameraon")

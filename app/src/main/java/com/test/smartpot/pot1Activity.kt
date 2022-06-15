@@ -16,6 +16,7 @@ class pot1Activity : AppCompatActivity() {
     private val server_uri = "tcp://:1883" //broker의 ip와 port
     private var mymqtt: MyMqtt? = null
     private var soilWaterValue = 0.0
+    private var waterPumpValue = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pot1)
@@ -42,17 +43,20 @@ class pot1Activity : AppCompatActivity() {
             }
             startActivity(levelIntent)
         }
+        // 워터펌프 양 출력
+        waterPump.setOnClickListener {
+            waterPumpValue = water_Amount.text.toString().toInt()
+            mymqtt?.publish("iot/waterPump", waterPumpValue.toString())
+        }
     }
     //mqtt 값을 받는 경우
     fun onReceived(topic:String,message: MqttMessage){
         val myTopic = topic.split('/')
         val myPayload = String(message.payload).split(':')
-        Log.d("text123",myTopic[1])
         when(myTopic[0]){
             "sensor1" -> {
-                Log.d("text123", myPayload[1])
                 soilWaterValue = myPayload[1].toDouble()
-                Log.d("text123", soilWaterValue.toString())
+                airtemp.text = myPayload[2]
                 if (soilWaterValue < 20){
                     soilWater.setTextColor(Color.RED)
                     soilWater.text = myPayload[1]
