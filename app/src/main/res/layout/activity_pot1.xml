@@ -318,21 +318,38 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="물탱크 높이"
+                    android:text="물탱크"
                     android:textSize="30sp"
                     android:textStyle="bold"
                     android:gravity="center"
                     android:textColor="#363A43"
                     />
-                <TextView
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="00%"
-                    android:textSize="30sp"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:textColor="#363A43"
-                    />
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/waterLevel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00"
+                        android:textSize="30sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:textColor="#363A43"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ml"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:textColor="#363A43"
+                        />
+                </LinearLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </com.google.android.material.card.MaterialCardView>
     </androidx.appcompat.widget.LinearLayoutCompat>

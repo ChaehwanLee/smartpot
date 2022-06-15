@@ -9,11 +9,12 @@ import android.util.Log
 
 import kotlinx.android.synthetic.main.activity_pot1.*
 import org.eclipse.paho.client.mqttv3.MqttMessage
+import kotlin.math.roundToInt
 
 class pot1Activity : AppCompatActivity() {
 
     private val sub_topic = "sensor1/#"
-    private val server_uri = "tcp://:1883" //broker의 ip와 port
+    private val server_uri = "tcp://35.182.237.235:1883" //broker의 ip와 port
     private var mymqtt: MyMqtt? = null
     private var soilWaterValue = 0.0
     private var waterPumpValue = 0
@@ -53,10 +54,14 @@ class pot1Activity : AppCompatActivity() {
     fun onReceived(topic:String,message: MqttMessage){
         val myTopic = topic.split('/')
         val myPayload = String(message.payload).split(':')
+        var mywaterLevel = 500.0
         when(myTopic[0]){
             "sensor1" -> {
                 soilWaterValue = myPayload[1].toDouble()
+                waterLevel.text = (myPayload[0].toDouble() * 5.0).roundToInt().toString()
+                Log.d("testt",myPayload.toString())
                 airtemp.text = myPayload[2]
+
                 if (soilWaterValue < 20){
                     soilWater.setTextColor(Color.RED)
                     soilWater.text = myPayload[1]
