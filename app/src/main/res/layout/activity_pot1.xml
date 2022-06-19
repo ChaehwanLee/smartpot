@@ -107,7 +107,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="대기 온도"
+                    android:text="대기 온습도"
                     android:textSize="25sp"
                     android:textStyle="bold"
                     android:gravity="center"
@@ -132,6 +132,35 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="℃"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:textColor="#363A43"
+                        />
+                    <TextView
+                        android:id="@+id/airhumid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="   "
+                        android:textSize="30sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:textColor="#363A43"
+                        />
+                    <TextView
+                        android:id="@+id/humid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="20"
+                        android:textSize="30sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:textColor="#363A43"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="%"
                         android:textSize="25sp"
                         android:textStyle="bold"
                         android:gravity="center"
@@ -268,38 +297,41 @@
             app:cardCornerRadius="20dp"
             android:background="@color/white"
             android:layout_weight="1">
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
                 android:paddingBottom="20dp">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="병충해 상태"
-                    android:textSize="30sp"
-                    android:textStyle="bold"
                     android:gravity="center"
+                    android:text="병충해"
                     android:textColor="#363A43"
-                    />
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
                 <TextView
+                    android:id="@+id/pot1Disease"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="정상"
-                    android:textSize="30sp"
-                    android:textStyle="bold"
-                    android:gravity="center"
                     android:textColor="#363A43"
-                    />
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
                 <Button
                     android:id="@+id/diseaseChk"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="질병 판단"
-                    android:layout_weight="1"/>
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:text="질병 판단" />
             </androidx.appcompat.widget.LinearLayoutCompat>
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView

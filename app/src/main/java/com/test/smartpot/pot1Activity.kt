@@ -20,10 +20,11 @@ import kotlin.math.roundToInt
 class pot1Activity : AppCompatActivity() {
     private var soilWaterFlag = 0 // 정상상태 - 0
     private var tempModeFlag = 0 // 정상상태 - 0
-    private var soilWaterValue = 0.0
-    private var waterPumpValue = 0
-    private var soilWaterAlertValue = 20.0
-    private var tempAlertValue = 8
+    private var soilWaterValue = 0.0 // 들어오는 토양 수분 값
+    private var waterPumpValue = 0 // 라즈베리파이로 보낼 워터펌프의 양
+    private var soilWaterAlertValue = 20.0 // 경고
+    private var tempAlertValue = 27
+    private var plantMode: String = ""
 
     private val sub_topic = "sensor1/#" // 구독할 토픽
     private val server_uri = "tcp://:1883" //broker의 ip와 port
@@ -43,11 +44,13 @@ class pot1Activity : AppCompatActivity() {
         //인텐트에서 가져오기
         pot1name.text = intent.getStringExtra("potname").toString()
         plantName.text = intent.getStringExtra("plantname").toString()
+        plantMode = intent.getStringExtra("plantname").toString()
         //리스트에 추가
 
         diseaseChk.setOnClickListener {
             val disintent = Intent(this, diseaseChkActivity::class.java).apply {
                 putExtra("potname","${pot1name.text}")
+                putExtra("plantname","${plantName.text}")
             }
             startActivity(disintent)
         }
@@ -66,73 +69,84 @@ class pot1Activity : AppCompatActivity() {
     }
     //mqtt 값을 받는 경우
     fun onReceived(topic:String,message: MqttMessage){
-        Thread{
-            // 알림의 설정
-            //val myTopic = topic.split('/')
-            val myPayload = String(message.payload).split(':')
-            var bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_flowerpot_320)
-            var builder1 = getNotificationBuilder("channel1","첫번째 채널")
-            var builder2 = getNotificationBuilder("channel2", "두번째 채널")
-            soilWaterValue = myPayload[1].toDouble()
-            runOnUiThread {
-                waterLevel.text = (myPayload[0].toDouble() * 5.0).roundToInt().toString()
+        val myTopic = topic.split('/')
+        when(myTopic[1]){
+            // 센서값 받는 경우
+            "every" -> {
+                Thread{
+                    // 알림의 설정
+                    val myPayload = String(message.payload).split(':')
+                    var bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_flowerpot_320)
+                    var builder1 = getNotificationBuilder("channel1","첫번째 채널")
+                    var builder2 = getNotificationBuilder("channel2", "두번째 채널")
+                    soilWaterValue = myPayload[1].toDouble()
+                    runOnUiThread {
+                        waterLevel.text = (myPayload[0].toDouble() * 5.0).roundToInt().toString()
 
-            }
+                    }
 
-            // 토양 수분이 일정 값 보다 작으면 알림을 보내는 코드
-            if (soilWaterValue < soilWaterAlertValue){
-                if(soilWaterFlag == 0){
-                    soilWaterFlag = 1 // 경고값보다 낮음
-                    // 알림
-                    builder1.setTicker("토양 수분 값")
-                    builder1.setSmallIcon(R.drawable.ic_flowerpot_320)
-                    builder1.setLargeIcon(bitmap)
-                    builder1.setNumber(100)
-                    builder1.setAutoCancel(true)
-                    builder1.setContentTitle("토양 수분 경고")
-                    builder1.setContentText(myPayload[1])
-                    var notication1 = builder1.build()
-                    var mng = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                    mng.notify(10, notication1)
+                    // 토양 수분이 일정 값 보다 작으면 알림을 보내는 코드
+                    if (soilWaterValue < soilWaterAlertValue){
+                        if(soilWaterFlag == 0){
+                            soilWaterFlag = 1 // 경고값보다 낮음
+                            // 알림
+                            builder1.setTicker("토양 수분 값")
+                            builder1.setSmallIcon(R.drawable.ic_flowerpot_320)
+                            builder1.setLargeIcon(bitmap)
+                            builder1.setNumber(100)
+                            builder1.setAutoCancel(true)
+                            builder1.setContentTitle("토양 수분 경고")
+                            builder1.setContentText(myPayload[1])
+                            var notication1 = builder1.build()
+                            var mng = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                            mng.notify(10, notication1)
 
-                }
-                runOnUiThread{
-                    soilWater.setTextColor(Color.RED)
-                    soilWater.text = myPayload[1]
-                }
-            }else{
-                soilWaterFlag = 0
-                runOnUiThread{
-                    soilWater.setTextColor(Color.BLUE)
-                    soilWater.text = myPayload[1]
-                }
+                        }
+                        runOnUiThread{
+                            soilWater.setTextColor(Color.RED)
+                            soilWater.text = myPayload[1]
+                        }
+                    }else{
+                        soilWaterFlag = 0
+                        runOnUiThread{
+                            soilWater.setTextColor(Color.BLUE)
+                            soilWater.text = myPayload[1]
+                        }
+                    }
+                    // 온도가 일정 값보다 작으면 경고를 보내는 코드
+                    if(myPayload[2].toDouble() < tempAlertValue){
+                        if(tempModeFlag == 0){
+                            tempModeFlag = 1 // 경고값보다 낮음
+                            // 알림
+                            builder2.setTicker("온도값")
+                            builder2.setSmallIcon(R.drawable.ic_flowerpot_320)
+                            builder2.setLargeIcon(bitmap)
+                            builder2.setNumber(100)
+                            builder2.setAutoCancel(true)
+                            builder2.setContentTitle("온도 경고")
+                            builder2.setContentText(myPayload[2])
+                            var notication2 = builder2.build()
+                            var mng = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                            mng.notify(10, notication2)
+                        }
+                        runOnUiThread {
+                            airtemp.text = myPayload[2]
+                        }
+                    }else{
+                        tempModeFlag = 0
+                        runOnUiThread {
+                            airtemp.text = myPayload[2]
+                        }
+                    }
+                }.start()
             }
-            // 온도가 일정 값보다 작으면 경고를 보내는 코드
-            if(myPayload[2].toInt() < tempAlertValue){
-                if(tempModeFlag == 0){
-                    tempModeFlag = 1 // 경고값보다 낮음
-                    // 알림
-                    builder2.setTicker("온도값")
-                    builder2.setSmallIcon(R.drawable.ic_flowerpot_320)
-                    builder2.setLargeIcon(bitmap)
-                    builder2.setNumber(100)
-                    builder2.setAutoCancel(true)
-                    builder2.setContentTitle("온도 경고")
-                    builder2.setContentText(myPayload[2])
-                    var notication2 = builder2.build()
-                    var mng = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                    mng.notify(10, notication2)
-                }
-                runOnUiThread {
-                    airtemp.text = myPayload[2]
-                }
-            }else{
-                tempModeFlag = 0
-                runOnUiThread {
-                    airtemp.text = myPayload[2]
-                }
+            // 질병데이터를 받는 경우
+            "disease" -> {
+                val myPayload = String(message.payload).split(':')
+                // 데이터를 보여주는 코드
+                pot1Disease.text = myPayload[0]
             }
-        }.start()
+        }
     }
 
     //
@@ -151,6 +165,28 @@ class pot1Activity : AppCompatActivity() {
             builder = NotificationCompat.Builder(this)
         }
         return builder
+    }
+
+    // 식물에 따른 모드 설정
+    fun setMode(mode: String){
+        when(mode){
+            "Strawberry" -> {
+                soilWaterAlertValue = 20.0 // 경고
+                tempAlertValue = 27
+            }
+            "Lettuce" -> {
+                soilWaterAlertValue = 20.0 // 경고
+                tempAlertValue = 27
+            }
+            "Rosemary" -> {
+                soilWaterAlertValue = 20.0 // 경고
+                tempAlertValue = 27
+            }
+            "Geranium" -> {
+                soilWaterAlertValue = 20.0 // 경고
+                tempAlertValue = 27
+            }
+        }
     }
 
     override fun onDestroy() {

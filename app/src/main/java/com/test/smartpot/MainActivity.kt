@@ -1,7 +1,11 @@
 package com.test.smartpot
 
 import android.app.Activity
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,12 +14,19 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_pot1.*
+import org.eclipse.paho.client.mqttv3.MqttMessage
+import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
 
     var potlist = 0
     var datalist = ArrayList<PotList>()
     var imglist = ArrayList<Int>()
+    private val sub_topic = "111111/#" // 구독할 토픽
+    private val server_uri = "tcp://:1883" //broker의 ip와 port
+    private var mymqtt: MyMqtt? = null
+
     private lateinit var resultLauncher1: ActivityResultLauncher<Intent>
     private lateinit var resultLauncher2: ActivityResultLauncher<Intent>
     private lateinit var resultLauncher3: ActivityResultLauncher<Intent>
@@ -23,6 +34,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         potListInit()
+        mymqtt = MyMqtt(this, server_uri)
+        mymqtt?.mysetCallback(::onReceived)
+        mymqtt?.connect(arrayOf<String>(sub_topic))
         //화분 데이터 추가를 위해 인텐트를 통해 이동 후 돌아왔을 때 화분을 리스트에 추가하기 위한 런처
         resultLauncher1 = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
             when(result.resultCode){
@@ -36,6 +50,7 @@ class MainActivity : AppCompatActivity() {
                         1 -> {
                             result.data?.getStringExtra("potname")?.let { myApp.prefs.setString("pot1name", it) }
                             result.data?.getStringExtra("plantname")?.let { myApp.prefs.setString("pot1plantname", it) }
+                            mymqtt?.publish("mode/pot1PlantName", result.data?.getStringExtra("plantname")!!)
                             myApp.prefs.setString("potlist","1")
                         }
                         2 -> {
@@ -117,7 +132,9 @@ class MainActivity : AppCompatActivity() {
         }
         addpot()
     }
+    fun onReceived(topic:String,message: MqttMessage){
 
+    }
 
     private fun addpot(){
         val adapter = PotListAdapter(this, R.layout.pot_list,datalist,imglist)
@@ -125,6 +142,8 @@ class MainActivity : AppCompatActivity() {
         myrecycler1.layoutManager = manager
         myrecycler1.adapter = adapter
     }
+
+
 
     //앱을 처음 실행시 메인 액티비티에 화분 리스트를 보여주기 위한 메소드
     private fun potListInit(){
@@ -144,5 +163,10 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mymqtt?.disconnect()
     }
 }
