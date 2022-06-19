@@ -27,7 +27,7 @@ class pot1Activity : AppCompatActivity() {
     private var plantMode: String = ""
 
     private val sub_topic = "sensor1/#" // 구독할 토픽
-    private val server_uri = "tcp://:1883" //broker의 ip와 port
+    private val server_uri = "tcp://35.182.237.235:1883" //broker의 ip와 port
     private var mymqtt: MyMqtt? = null
 
 
@@ -82,8 +82,10 @@ class pot1Activity : AppCompatActivity() {
                     soilWaterValue = myPayload[1].toDouble()
                     runOnUiThread {
                         waterLevel.text = (myPayload[0].toDouble() * 5.0).roundToInt().toString()
-
+                        airhumid.text = myPayload[4].toDouble().roundToInt().toString()
+                        ledLux.text = myPayload[3].toDouble().roundToInt().toString()
                     }
+
 
                     // 토양 수분이 일정 값 보다 작으면 알림을 보내는 코드
                     if (soilWaterValue < soilWaterAlertValue){
@@ -140,6 +142,9 @@ class pot1Activity : AppCompatActivity() {
                     }
                 }.start()
             }
+
+
+
             // 질병데이터를 받는 경우
             "disease" -> {
                 val myPayload = String(message.payload).split(':')
