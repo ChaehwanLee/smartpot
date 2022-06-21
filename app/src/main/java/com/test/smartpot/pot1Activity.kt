@@ -20,11 +20,16 @@ import kotlin.math.roundToInt
 class pot1Activity : AppCompatActivity() {
     private var soilWaterFlag = 0 // 정상상태 - 0
     private var tempModeFlag = 0 // 정상상태 - 0
+    private var waterWarnFlag = 0 // 물 양 정상상태 - 0
+    private var solarAlertFlag = 0 // 빛 양 정상상태 - 0
+
+    private var solarAlertValue = 500 // 조도를 판단하는 기준
+    private var lightValue = 0 // 들어오는 조도의 값
     private var soilWaterValue = 0.0 // 들어오는 토양 수분 값
-    private var waterPumpValue = 0 // 라즈베리파이로 보낼 워터펌프의 양
     private var soilWaterAlertValue = 20.0 // 경고
     private var tempAlertValue = 27
-    private var plantMode: String = ""
+    private var plantMode: String = "" // 식물 이름
+    private var growmode = 7 // 생육상태
 
     private val sub_topic = "sensor1/#" // 구독할 토픽
     private val server_uri = "tcp://35.182.237.235:1883" //broker의 ip와 port
@@ -61,11 +66,6 @@ class pot1Activity : AppCompatActivity() {
             }
             startActivity(levelIntent)
         }
-        // 워터펌프 양 출력
-        waterPump.setOnClickListener {
-            waterPumpValue = water_Amount.text.toString().toInt()
-            mymqtt?.publish("iot/waterPump", waterPumpValue.toString())
-        }
     }
     //mqtt 값을 받는 경우
     fun onReceived(topic:String,message: MqttMessage){
@@ -79,13 +79,41 @@ class pot1Activity : AppCompatActivity() {
                     var bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_flowerpot_320)
                     var builder1 = getNotificationBuilder("channel1","첫번째 채널")
                     var builder2 = getNotificationBuilder("channel2", "두번째 채널")
+                    var builder4 = getNotificationBuilder("channel4", "네번째 채널")
                     soilWaterValue = myPayload[1].toDouble()
+                    lightValue = myPayload[3].toDouble().roundToInt()
                     runOnUiThread {
                         waterLevel.text = (myPayload[0].toDouble() * 5.0).roundToInt().toString()
                         airhumid.text = myPayload[4].toDouble().roundToInt().toString()
-                        ledLux.text = myPayload[3].toDouble().roundToInt().toString()
+
                     }
 
+                    if(solarAlertValue > lightValue){
+                        if(solarAlertFlag == 0){
+                            solarAlertFlag = 1 // 경고값보다 낮음
+                            // 알림
+                            builder4.setTicker("조도 경고")
+                            builder4.setSmallIcon(R.drawable.ic_flowerpot_320)
+                            builder4.setLargeIcon(bitmap)
+                            builder4.setNumber(100)
+                            builder4.setAutoCancel(true)
+                            builder4.setContentTitle("조도 경고")
+                            builder4.setContentText(myPayload[1])
+                            var notication4 = builder4.build()
+                            var mng = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                            mng.notify(10, notication4)
+                            runOnUiThread{
+                                ledLux.setTextColor(Color.RED)
+                                ledLux.text = lightValue.toString()
+                            }
+                        }
+                    }else{
+                        solarAlertFlag = 0
+                        runOnUiThread{
+                            ledLux.setTextColor(Color.BLUE)
+                            ledLux.text = lightValue.toString()
+                        }
+                    }
 
                     // 토양 수분이 일정 값 보다 작으면 알림을 보내는 코드
                     if (soilWaterValue < soilWaterAlertValue){
@@ -142,14 +170,60 @@ class pot1Activity : AppCompatActivity() {
                     }
                 }.start()
             }
+            "growmode" -> { // 질병 + 생육단계 를 받음
+                var growpayload = String(message.payload).split(':')
+                when(growpayload[0]){ // 생육단계를 출력하기 위함
+                    "0" -> {
+                        potStatus.text = "1단계"
+                        growmode = 0
+                    }
+                    "1" -> {
+                        potStatus.text = "2단계"
+                        growmode = 1
+                    }
+                    "2" -> {
+                        potStatus.text = "3단계"
+                        growmode = 2
+                    }
+                    "3" -> {
+                        potStatus.text = "4단계"
+                        growmode = 3
+                    }
+                    "4" -> {
+                        potStatus.text = "5단계"
+                        growmode = 4
+                    }
+                    "5" -> {
+                        potStatus.text = "1단계"
+                        growmode = 5
+                    }
+                    "6" -> {
+                        potStatus.text = "2단계"
+                        growmode = 6
+                    }
+                    "7" -> {
+                        potStatus.text = "정상"
+                        growmode = 7
+                    }
+                }
+                // 모드 설정
+                setMode(plantMode)
 
-
-
-            // 질병데이터를 받는 경우
-            "disease" -> {
-                val myPayload = String(message.payload).split(':')
-                // 데이터를 보여주는 코드
-                pot1Disease.text = myPayload[0]
+                pot1Disease.text = growpayload[1]
+            }
+            "waterWarn" -> {
+                var builder3 = getNotificationBuilder("channel3", "세번째 채널")
+                var bitmap3 = BitmapFactory.decodeResource(resources, R.drawable.ic_flowerpot_320)
+                builder3.setTicker("물 부족 경고")
+                builder3.setSmallIcon(R.drawable.ic_flowerpot_320)
+                builder3.setLargeIcon(bitmap3)
+                builder3.setNumber(100)
+                builder3.setAutoCancel(true)
+                builder3.setContentTitle("물탱크 물 부족")
+                builder3.setContentText("물탱크의 물이 부족합니다다")
+                var notication3 = builder3.build()
+                var mng = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                mng.notify(10, notication3)
             }
         }
     }
@@ -176,23 +250,53 @@ class pot1Activity : AppCompatActivity() {
     fun setMode(mode: String){
         when(mode){
             "Strawberry" -> {
-                soilWaterAlertValue = 20.0 // 경고
-                tempAlertValue = 27
+                when(growmode){
+                    0 -> {
+                        soilWaterAlertValue = 20.0 // 경고
+                        tempAlertValue = 20 // 한계온도
+                        solarAlertValue = 500 // 조도를 판단하는 기준
+                    }
+                    1 -> {
+                        soilWaterAlertValue = 20.0 // 경고
+                        tempAlertValue = 25 // 한계온도
+                        solarAlertValue = 500 // 조도를 판단하는 기준
+                    }
+                    2 -> {
+                        soilWaterAlertValue = 20.0 // 경고
+                        tempAlertValue = 23 // 한계온도
+                        solarAlertValue = 500 // 조도를 판단하는 기준
+                    }
+                    3 -> {
+                        soilWaterAlertValue = 20.0 // 경고
+                        tempAlertValue = 20 // 한계온도
+                        solarAlertValue = 500 // 조도를 판단하는 기준
+                    }
+                    4 -> {
+                        soilWaterAlertValue = 20.0 // 경고
+                        tempAlertValue = 20 // 한계온도
+                        solarAlertValue = 500 // 조도를 판단하는 기준
+                    }
+                }
+
             }
             "Lettuce" -> {
                 soilWaterAlertValue = 20.0 // 경고
                 tempAlertValue = 27
+                solarAlertValue = 500 // 조도를 판단하는 기준
             }
             "Rosemary" -> {
                 soilWaterAlertValue = 20.0 // 경고
                 tempAlertValue = 27
+                solarAlertValue = 500 // 조도를 판단하는 기준
             }
             "Geranium" -> {
                 soilWaterAlertValue = 20.0 // 경고
                 tempAlertValue = 27
+                solarAlertValue = 500 // 조도를 판단하는 기준
             }
         }
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

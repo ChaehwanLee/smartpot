@@ -80,6 +80,7 @@
                 android:gravity="center"
                 android:textColor="#363A43"
                 />
+
             <Button
                 android:id="@+id/levelChk"
                 android:layout_marginStart="10dp"
@@ -181,40 +182,58 @@
             app:cardCornerRadius="20dp"
             android:background="@color/white"
             android:layout_weight="1">
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
                 android:paddingBottom="20dp">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="조도"
-                    android:textSize="30sp"
-                    android:textStyle="bold"
-                    android:gravity="center"
                     android:textColor="#363A43"
-                    />
-                <TextView
-                    android:id="@+id/ledLux"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="00%"
-                    android:textSize="30sp"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:textColor="#363A43"
-                    />
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/ledLux"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:textColor="#363A43"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="lux"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:textColor="#363A43"
+                        />
+                </LinearLayout>
+
                 <Button
                     android:id="@+id/led_Onoff"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:textStyle="bold"
-                    android:text="LED on/off"/>
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="LED on/off"
+                    android:textStyle="bold" />
             </androidx.appcompat.widget.LinearLayoutCompat>
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView
@@ -264,23 +283,6 @@
                         android:textColor="#363A43"
                         />
                 </LinearLayout>
-
-                <EditText
-                    android:id="@+id/water_Amount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="ml 단위"
-                    android:textColorHint="@color/black"
-                    />
-                <Button
-                    android:id="@+id/waterPump"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textStyle="bold"
-                    android:text="물 주기"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </com.google.android.material.card.MaterialCardView>
     </androidx.appcompat.widget.LinearLayoutCompat>

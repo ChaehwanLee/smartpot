@@ -71,6 +71,7 @@ class MainActivity : AppCompatActivity() {
                 Activity.RESULT_OK -> {
                     datalist[0].title = result.data?.getStringExtra("potname")
                     datalist[0].plant = result.data?.getStringExtra("plantname")
+                    mymqtt?.publish("mode/pot1PlantModify", result.data?.getStringExtra("plantname")!!)
                     addpot()
                 }
                 Activity.RESULT_CANCELED -> {

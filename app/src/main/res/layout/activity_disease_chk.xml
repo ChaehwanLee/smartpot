@@ -45,7 +45,7 @@
                 android:id="@+id/diseaseResult"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="--입니다"
+                android:text="--"
                 android:textSize="25sp"
                 android:gravity="center"
                 android:textStyle="bold"
@@ -111,11 +111,12 @@
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
                 <TextView
-                    android:id="@+id/mothodBtn1"
-                    android:layout_margin="15dp"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/methodBtn1"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@color/purple_200"
                     android:layout_weight="1"
@@ -125,26 +126,10 @@
                     android:textStyle="bold"
                     android:layout_marginBottom="10dp"/>
                 <TextView
-                    android:id="@+id/mothodBtn2"
-                    android:layout_margin="15dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:background="@color/purple_200"
-                    android:text="sds"
-                    android:textSize="20sp"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="10dp"/>
-            </androidx.appcompat.widget.LinearLayoutCompat>
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/mothodText1"
-                    android:layout_margin="15dp"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/methodText1"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text=""
@@ -152,10 +137,30 @@
                     android:gravity="center"
                     android:textStyle="bold"
                     android:layout_marginBottom="10dp"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
                 <TextView
-                    android:id="@+id/mothodText2"
-                    android:layout_margin="15dp"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/methodBtn2"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@color/purple_200"
+                    android:text="sds"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="10dp"/>
+                <TextView
+                    android:id="@+id/methodText2"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text=""

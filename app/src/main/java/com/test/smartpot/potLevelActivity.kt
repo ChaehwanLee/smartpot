@@ -13,6 +13,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import kotlinx.android.synthetic.main.activity_pot1.*
 import kotlinx.android.synthetic.main.activity_pot_level.*
 import org.eclipse.paho.client.mqttv3.MqttMessage
 import java.io.FileNotFoundException
@@ -22,6 +23,7 @@ import java.io.IOException
 
 class potLevelActivity : AppCompatActivity() {
     var sub_topic = ""
+    var sub_topic2 = "sensor1/growmode"
     val server_uri = "tcp://:1883" //broker의 ip와 port
     var mymqtt: MyMqtt? = null
     lateinit var image1: Bitmap
@@ -32,6 +34,7 @@ class potLevelActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pot_level)
+
         val intent = intent
         potlevelname.text = intent.getStringExtra("potname")
         plantname = intent.getStringExtra("plantname").toString()
@@ -39,7 +42,7 @@ class potLevelActivity : AppCompatActivity() {
 
         mymqtt = MyMqtt(this, server_uri)
         mymqtt?.mysetCallback(::onReceived)
-        mymqtt?.connect(arrayOf<String>(sub_topic))
+        mymqtt?.connect(arrayOf<String>(sub_topic, sub_topic2))
 
         //공유하기 클릭시 원하는 곳으로 공유
         snsShareBtn.setOnClickListener {
@@ -69,6 +72,35 @@ class potLevelActivity : AppCompatActivity() {
                 imageFlag = 1
                 levelchkcamera.setImageBitmap(image)
                 saveImageUpAndVerQ(image1)
+            }
+            sub_topic2 -> {
+                var growpayload = String(message.payload).split(':')
+                when(growpayload[0]){
+                    "0" -> {
+                        potLevel.text = "1단계"
+                    }
+                    "1" -> {
+                        potLevel.text = "2단계"
+                    }
+                    "2" -> {
+                        potLevel.text = "3단계"
+                    }
+                    "3" -> {
+                        potLevel.text = "4단계"
+                    }
+                    "4" -> {
+                        potLevel.text = "5단계"
+                    }
+                    "5" -> {
+                        potLevel.text = "1단계"
+                    }
+                    "6" -> {
+                        potLevel.text = "2단계"
+                    }
+                    "7" -> {
+                        potLevel.text = "정상"
+                    }
+                }
             }
         }
     }
