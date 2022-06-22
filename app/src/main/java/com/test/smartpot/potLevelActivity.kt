@@ -24,7 +24,7 @@ import java.io.IOException
 class potLevelActivity : AppCompatActivity() {
     var sub_topic = ""
     var sub_topic2 = "sensor1/growmode"
-    val server_uri = "tcp://:1883" //broker의 ip와 port
+    val server_uri = "tcp://3.96.178.99:1883" //broker의 ip와 port
     var mymqtt: MyMqtt? = null
     lateinit var image1: Bitmap
     var msg1: ByteArray? = null

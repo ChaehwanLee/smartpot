@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     var datalist = ArrayList<PotList>()
     var imglist = ArrayList<Int>()
     private val sub_topic = "111111/#" // 구독할 토픽
-    private val server_uri = "tcp://:1883" //broker의 ip와 port
+    private val server_uri = "tcp://3.96.178.99:1883" //broker의 ip와 port
     private var mymqtt: MyMqtt? = null
 
     private lateinit var resultLauncher1: ActivityResultLauncher<Intent>

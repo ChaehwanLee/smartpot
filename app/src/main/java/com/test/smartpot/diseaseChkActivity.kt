@@ -10,7 +10,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage
 class diseaseChkActivity : AppCompatActivity() {
     var sub_topic = ""
     val sub_topic2 = "sensor1/growmode"
-    val server_uri = "tcp://:1883" //broker의 ip와 port
+    val server_uri = "tcp://3.96.178.99:1883" //broker의 ip와 port
     var mymqtt: MyMqtt? = null
     var plantname = ""
     var diseaseToggleFlag1 = 0 // 첫번째 칸 접혀있는 상태
@@ -157,21 +157,53 @@ class diseaseChkActivity : AppCompatActivity() {
                 mqttImg.setImageBitmap(image)
             }
             sub_topic2 -> { // 질병값 받을 때 식물에 따라서 걸리는 질병이 다르므로 분류하여 적용
+                var growpayload = String(message.payload).split(':')
                 when(plantname){
                     "Strawberry" ->{
+                        when(growpayload[1]){
+                            "잿빛곰팡이병"->{
+                                copingMethod.text = "설명설명설명1"
+                            }
+                            "흰가루병" -> {
+                                copingMethod.text = "설명설명설명2"
+                            }
 
+                        }
                     }
                     "Lettuce" ->{
+                        when(growpayload[1]){
+                            "균핵병"->{
+                                copingMethod.text = "설명설명설명1"
+                            }
+                            "노균병" -> {
+                                copingMethod.text = "설명설명설명2"
+                            }
 
+                        }
                     }
                     "Rosemary" ->{
+                        when(growpayload[1]){
+                            "흰가루병"->{
+                                copingMethod.text = "설명설명설명1"
+                            }
+                            "점무늬병" -> {
+                                copingMethod.text = "설명설명설명2"
+                            }
 
+                        }
                     }
                     "Geranium" ->{
-
+                        when(growpayload[1]){
+                            "갈색무늬병"->{
+                                copingMethod.text = "설명설명설명1"
+                            }
+                            "잿빛곰팡이병" -> {
+                                copingMethod.text = "설명설명설명2"
+                            }
+                        }
                     }
                 }
-                var growpayload = String(message.payload).split(':')
+
                 diseaseResult.text = growpayload[1]
             }
         }

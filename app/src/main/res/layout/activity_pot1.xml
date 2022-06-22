@@ -225,15 +225,7 @@
                         />
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/led_Onoff"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:text="LED on/off"
-                    android:textStyle="bold" />
+
             </androidx.appcompat.widget.LinearLayoutCompat>
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView
@@ -386,4 +378,13 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
         </com.google.android.material.card.MaterialCardView>
     </androidx.appcompat.widget.LinearLayoutCompat>
+    <Button
+        android:id="@+id/led_Onoff"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="구현예정"
+        android:textStyle="bold" />
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -32,7 +32,7 @@ class pot1Activity : AppCompatActivity() {
     private var growmode = 7 // 생육상태
 
     private val sub_topic = "sensor1/#" // 구독할 토픽
-    private val server_uri = "tcp://35.182.237.235:1883" //broker의 ip와 port
+    private val server_uri = "tcp://3.96.178.99:1883" //broker의 ip와 port
     private var mymqtt: MyMqtt? = null
 
 
@@ -92,13 +92,18 @@ class pot1Activity : AppCompatActivity() {
                         if(solarAlertFlag == 0){
                             solarAlertFlag = 1 // 경고값보다 낮음
                             // 알림
+                            val bigText = "LED의 높이를 조도가 " +
+                                    solarAlertValue + "lux 가 넘도록 올려주세요"
+                            val style = NotificationCompat.BigTextStyle()   // 1
+                            style.bigText(bigText)    // 2
                             builder4.setTicker("조도 경고")
                             builder4.setSmallIcon(R.drawable.ic_flowerpot_320)
                             builder4.setLargeIcon(bitmap)
                             builder4.setNumber(100)
+                            builder4.setStyle(style)   // 3
                             builder4.setAutoCancel(true)
-                            builder4.setContentTitle("조도 경고")
-                            builder4.setContentText(myPayload[1])
+                            builder4.setContentTitle("현재 조도 : " + myPayload[3] + "lux")
+                            builder4.setContentText("")
                             var notication4 = builder4.build()
                             var mng = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                             mng.notify(10, notication4)
@@ -120,6 +125,7 @@ class pot1Activity : AppCompatActivity() {
                         if(soilWaterFlag == 0){
                             soilWaterFlag = 1 // 경고값보다 낮음
                             // 알림
+
                             builder1.setTicker("토양 수분 값")
                             builder1.setSmallIcon(R.drawable.ic_flowerpot_320)
                             builder1.setLargeIcon(bitmap)
