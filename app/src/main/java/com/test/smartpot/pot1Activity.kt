@@ -179,34 +179,27 @@ class pot1Activity : AppCompatActivity() {
             "growmode" -> { // 질병 + 생육단계 를 받음
                 var growpayload = String(message.payload).split(':')
                 when(growpayload[0]){ // 생육단계를 출력하기 위함
-                    "0" -> {
+                    "1" -> {
                         potStatus.text = "1단계"
                         growmode = 0
                     }
-                    "1" -> {
+                    "2" -> {
                         potStatus.text = "2단계"
                         growmode = 1
                     }
-                    "2" -> {
+                    "3" -> {
                         potStatus.text = "3단계"
                         growmode = 2
                     }
-                    "3" -> {
+                    "4" -> {
                         potStatus.text = "4단계"
                         growmode = 3
                     }
-                    "4" -> {
+                    "5" -> {
                         potStatus.text = "5단계"
                         growmode = 4
                     }
-                    "5" -> {
-                        potStatus.text = "1단계"
-                        growmode = 5
-                    }
-                    "6" -> {
-                        potStatus.text = "2단계"
-                        growmode = 6
-                    }
+
                     "7" -> {
                         potStatus.text = "정상"
                         growmode = 7
