@@ -127,10 +127,10 @@ class MainActivity : AppCompatActivity() {
                 resultLauncher3.launch(intent)
             }
         }
-        view_friend.setOnClickListener {
-            val intent = Intent(this, friendActivity::class.java)
-            startActivity(intent)
-        }
+//        view_friend.setOnClickListener {
+//            val intent = Intent(this, friendActivity::class.java)
+//            startActivity(intent)
+//        }
         addpot()
     }
     fun onReceived(topic:String,message: MqttMessage){

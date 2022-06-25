@@ -37,16 +37,7 @@
             android:textSize="25dp"
             android:background="@drawable/potlistbtn"/>
 
-        <TextView
-            android:id="@+id/view_friend"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="친구 보기"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_margin="5dp"
-            android:textSize="25dp"
-            android:background="@drawable/potlistbtn"/>
+
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"

@@ -84,9 +84,12 @@ class pot1Activity : AppCompatActivity() {
                     lightValue = myPayload[3].toDouble().roundToInt()
                     runOnUiThread {
                         waterLevel.text = (myPayload[0].toDouble() * 5.0).roundToInt().toString()
+
                         airhumid.text = myPayload[4].toDouble().roundToInt().toString()
 
                     }
+
+
 
                     if(solarAlertValue > lightValue){
                         if(solarAlertFlag == 0){
@@ -141,12 +144,14 @@ class pot1Activity : AppCompatActivity() {
                         runOnUiThread{
                             soilWater.setTextColor(Color.RED)
                             soilWater.text = myPayload[1]
+
                         }
                     }else{
                         soilWaterFlag = 0
                         runOnUiThread{
                             soilWater.setTextColor(Color.BLUE)
                             soilWater.text = myPayload[1]
+                            
                         }
                     }
                     // 온도가 일정 값보다 작으면 경고를 보내는 코드
@@ -200,11 +205,16 @@ class pot1Activity : AppCompatActivity() {
                         growmode = 4
                     }
 
+
                     "7" -> {
                         potStatus.text = "정상"
                         growmode = 7
                     }
+                    else -> {
+                        potStatus.text = "정상"
+                    }
                 }
+                //potStatus.text = "5단계"
                 // 모드 설정
                 setMode(plantMode)
 
@@ -227,7 +237,7 @@ class pot1Activity : AppCompatActivity() {
         }
     }
 
-    //
+
     fun getNotificationBuilder(id: String, name: String): NotificationCompat.Builder {
         var builder: NotificationCompat.Builder? = null
 
@@ -247,12 +257,12 @@ class pot1Activity : AppCompatActivity() {
 
     // 식물에 따른 모드 설정
     fun setMode(mode: String){
-        when(mode){
+        when(mode){// 식물, 생육상태에 따라서 토양습도, 온도, 조도 경고 기준값 설정
             "Strawberry" -> {
                 when(growmode){
                     0 -> {
-                        soilWaterAlertValue = 20.0 // 경고
-                        tempAlertValue = 20 // 한계온도
+                        soilWaterAlertValue = 20.0 // 토양습도경고
+                        tempAlertValue = 28 // 한계온도
                         solarAlertValue = 500 // 조도를 판단하는 기준
                     }
                     1 -> {

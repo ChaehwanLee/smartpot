@@ -76,24 +76,23 @@ class potLevelActivity : AppCompatActivity() {
             sub_topic2 -> {
                 var growpayload = String(message.payload).split(':')
                 when(growpayload[0]){
-                    "0" -> {
-                        potLevel.text = "1단계"
-                    }
                     "1" -> {
-                        potLevel.text = "2단계"
+                        potLevel.text = "1단계"
                     }
                     "2" -> {
-                        potLevel.text = "3단계"
+                        potLevel.text = "2단계"
                     }
                     "3" -> {
-                        potLevel.text = "4단계"
+                        potLevel.text = "3단계"
                     }
                     "4" -> {
-                        potLevel.text = "5단계"
+                        potLevel.text = "4단계"
                     }
                     "5" -> {
-                        potLevel.text = "1단계"
+                        potLevel.text = "5단계"
                     }
+
+
                     "6" -> {
                         potLevel.text = "2단계"
                     }

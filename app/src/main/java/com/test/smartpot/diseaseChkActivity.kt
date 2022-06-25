@@ -176,6 +176,9 @@ class diseaseChkActivity : AppCompatActivity() {
                 when(plantname){
                     "Strawberry" ->{
                         when(growpayload[1]){
+                            "해충" -> {
+                                "해충이 있으니 방제해주세요"
+                            }
                             "잿빛곰팡이병"->{
                                 copingMethod.text = "일단 발병이 시작되면 빠르게 전반되어 " +
                                         "\n방제가 매우 어렵고 또한 기온이 선선하고 습윤한 조건이 계속되면 " +
@@ -230,7 +233,9 @@ class diseaseChkActivity : AppCompatActivity() {
                                         "이 병은 한번 발생하면 이후 방제하기가 매우 곤란한 병이므로 예방에 초점을 맞추어 방제한다"
                             }
                             "잿빛곰팡이병" -> {
-                                copingMethod.text = "설명설명설명2"
+                                copingMethod.text = "일단 발병이 시작되면 빠르게 전반되어 " +
+                                        "\n방제가 매우 어렵고 또한 기온이 선선하고 습윤한 조건이 계속되면 " +
+                                        "\n농약을 살포해도 방제가 되지 않기 때문에 무엇보다도 예방이 중요하다."
                             }
                             else -> {
                                 copingMethod.text = "정상입니다"
