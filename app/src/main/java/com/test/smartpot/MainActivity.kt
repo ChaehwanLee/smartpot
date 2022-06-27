@@ -59,7 +59,6 @@ class MainActivity : AppCompatActivity() {
                             myApp.prefs.setString("potlist","2")
                         }
                     }
-
                 }
                 Activity.RESULT_CANCELED -> {
                     Toast.makeText(this,"화분 추가 취소",Toast.LENGTH_LONG).show()

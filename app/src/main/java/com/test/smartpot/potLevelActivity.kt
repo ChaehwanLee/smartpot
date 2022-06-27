@@ -91,8 +91,6 @@ class potLevelActivity : AppCompatActivity() {
                     "5" -> {
                         potLevel.text = "5단계"
                     }
-
-
                     "6" -> {
                         potLevel.text = "2단계"
                     }

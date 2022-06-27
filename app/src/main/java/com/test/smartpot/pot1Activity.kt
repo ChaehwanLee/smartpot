@@ -186,29 +186,36 @@ class pot1Activity : AppCompatActivity() {
                 when(growpayload[0]){ // 생육단계를 출력하기 위함
                     "1" -> {
                         potStatus.text = "1단계"
-                        growmode = 0
+                        growmode = 1
                     }
                     "2" -> {
                         potStatus.text = "2단계"
-                        growmode = 1
+                        growmode = 2
                     }
                     "3" -> {
                         potStatus.text = "3단계"
-                        growmode = 2
+                        growmode = 3
                     }
                     "4" -> {
                         potStatus.text = "4단계"
-                        growmode = 3
+                        growmode = 4
                     }
                     "5" -> {
                         potStatus.text = "5단계"
-                        growmode = 4
+                        growmode = 5
                     }
-
 
                     "7" -> {
                         potStatus.text = "정상"
                         growmode = 7
+                    }
+                    "8" -> {
+                        potStatus.text = "1단계"
+                        growmode = 8
+                    }
+                    "9" -> {
+                        potStatus.text = "2단계"
+                        growmode = 9
                     }
                     else -> {
                         potStatus.text = "정상"
@@ -260,27 +267,27 @@ class pot1Activity : AppCompatActivity() {
         when(mode){// 식물, 생육상태에 따라서 토양습도, 온도, 조도 경고 기준값 설정
             "Strawberry" -> {
                 when(growmode){
-                    0 -> {
+                    1 -> {
                         soilWaterAlertValue = 20.0 // 토양습도경고
                         tempAlertValue = 28 // 한계온도
                         solarAlertValue = 500 // 조도를 판단하는 기준
                     }
-                    1 -> {
+                    2 -> {
                         soilWaterAlertValue = 20.0 // 경고
                         tempAlertValue = 25 // 한계온도
                         solarAlertValue = 500 // 조도를 판단하는 기준
                     }
-                    2 -> {
+                    3 -> {
                         soilWaterAlertValue = 20.0 // 경고
                         tempAlertValue = 23 // 한계온도
                         solarAlertValue = 500 // 조도를 판단하는 기준
                     }
-                    3 -> {
+                    4 -> {
                         soilWaterAlertValue = 20.0 // 경고
                         tempAlertValue = 20 // 한계온도
                         solarAlertValue = 500 // 조도를 판단하는 기준
                     }
-                    4 -> {
+                    5 -> {
                         soilWaterAlertValue = 20.0 // 경고
                         tempAlertValue = 20 // 한계온도
                         solarAlertValue = 500 // 조도를 판단하는 기준
